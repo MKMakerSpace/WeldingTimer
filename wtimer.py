@@ -8,7 +8,7 @@ mp3file = '/home/pi/Sounds/klaxon.mp3'
 mp3start = '/home/pi/Sounds/started.mp3'
 mp3stop = '/home/pi/Sounds/stopped.mp3'
 gpio_pin = 21
-set_time = 18 # 1800 seconds = 30 minutes
+set_time = 1800 # 1800 seconds = 30 minutes
 
 import tkinter as tk
 import os
@@ -50,10 +50,10 @@ def button_push(chan): # detect button push and take appropriate action
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(gpio_pin, GPIO.FALLING, callback=button_push, bouncetime=300)
+GPIO.add_event_detect(gpio_pin, GPIO.FALLING, callback=button_push, bouncetime=500)
 
 def count(): # count down and play alert when timer reaches zero
-    global t, playing, running, endTime
+    global t, playing, running
     mins, secs = divmod(t, 60)
     timeformat = '{:02d}:{:02d}'.format(mins, secs)
     clock.config(text=timeformat) # update time display
