@@ -4,7 +4,7 @@
 # (c) Chris Taylor, July 2018
 #
 
-mp3file = '/home/pi/Sounds/klaxon.mp3'
+mp3file = '/home/pi/Sounds/brand.mp3'
 mp3start = '/home/pi/Sounds/started.mp3'
 mp3stop = '/home/pi/Sounds/stopped.mp3'
 gpio_pin = 21
@@ -17,7 +17,7 @@ import time
 import RPi.GPIO as GPIO
 from mutagen.mp3 import MP3
 audio = MP3(mp3file)
-
+ 
 playing = False
 running = False
 t = set_time
@@ -31,7 +31,7 @@ clock = tk.Label(root, font=('piboto', 256, 'bold'))
 clock.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
 def play(): # begin playing alert sound and return finish time
-    subprocess.Popen(['mpg123', '-q', mp3file])            
+    subprocess.Popen(['mpg123', '-q', mp3file])
     return time.time() + audio.info.length
 
 def button_push(chan): # detect button push and take appropriate action
@@ -53,16 +53,16 @@ GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(gpio_pin, GPIO.FALLING, callback=button_push, bouncetime=500)
 
 def count(): # count down and play alert when timer reaches zero
-    global t, playing, running
+    global t, playing, running, endTime
     mins, secs = divmod(t, 60)
     timeformat = '{:02d}:{:02d}'.format(mins, secs)
     clock.config(text=timeformat) # update time display
     if running:
         t -= 1
-    if (t == 0): # timer has run out so play alert
-        playing = True
-        running = False
-        endTime = play()
+        if (t == 0): # timer has run out so play alert
+            playing = True
+            running = False
+            endTime = play()
     if (playing and time.time() > endTime): # alert finished so restart
         endTime = play()
     clock.after(1000, count) # recurse after 1 second
