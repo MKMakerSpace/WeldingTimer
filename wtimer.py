@@ -28,7 +28,7 @@ root.wm_attributes("-topmost", 1)
 root.bind("<Escape>", lambda event:root.destroy()) # keyboard escape
 
 clock = tk.Label(root, font=('piboto', 256, 'bold'))
-clock.grid(row = 10, column = 2, padx = 5, pady = 5)
+clock.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
 def play(): # begin playing alert sound and return finish time
     subprocess.Popen(['mpg123', '-q', mp3file])            
