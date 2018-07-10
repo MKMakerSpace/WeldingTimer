@@ -4,7 +4,7 @@
 # (c) Chris Taylor, July 2018
 #
 
-mp3file = '/home/pi/Sounds/brand.mp3'
+mp3file = '/home/pi/Sounds/klaxon.mp3'
 mp3start = '/home/pi/Sounds/started.mp3'
 mp3stop = '/home/pi/Sounds/stopped.mp3'
 gpio_pin = 21
@@ -54,9 +54,6 @@ GPIO.add_event_detect(gpio_pin, GPIO.FALLING, callback=button_push, bouncetime=5
 
 def count(): # count down and play alert when timer reaches zero
     global t, playing, running, endTime
-    mins, secs = divmod(t, 60)
-    timeformat = '{:02d}:{:02d}'.format(mins, secs)
-    clock.config(text=timeformat) # update time display
     if running:
         t -= 1
         if (t == 0): # timer has run out so play alert
@@ -65,6 +62,9 @@ def count(): # count down and play alert when timer reaches zero
             endTime = play()
     if (playing and time.time() > endTime): # alert finished so restart
         endTime = play()
+    mins, secs = divmod(t, 60)
+    timeformat = '{:02d}:{:02d}'.format(mins, secs)
+    clock.config(text=timeformat) # update time display
     clock.after(1000, count) # recurse after 1 second
  
 count()
