@@ -8,9 +8,9 @@ mp3file = '/home/pi/Sounds/klaxon.mp3'
 mp3start = '/home/pi/Sounds/started.mp3'
 mp3stop = '/home/pi/Sounds/stopped.mp3'
 gpio_pin = 21
-set_time = 1800 # 1800 seconds = 30 minutes
+set_time = 3600 # 3600 seconds = 60 minutes  
 
-import tkinter as tk
+import tkinter as tk 
 import os
 import subprocess
 import time
@@ -36,6 +36,9 @@ def play(): # begin playing alert sound and return finish time
 
 def button_push(chan): # detect button push and take appropriate action
     global t, playing, running
+    time.sleep(0.05)
+    if GPIO.input(gpio_pin) == GPIO.HIGH: # ignore transients
+        return
     if playing:
         subprocess.call(['killall', 'mpg123'])
         playing = False
